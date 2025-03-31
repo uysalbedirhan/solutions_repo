@@ -171,9 +171,96 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<h1 id="problem-1">Problem 1</h1>
-<p>hello
-fghd</p>
+<p>Problem 1</p>
+<p>Investigating the Dynamics of a Forced Damped Pendulum</p>
+<h1 id="1-theoretical-background">1. Theoretical Background</h1>
+<p>A forced damped pendulum illustrates the dynamics of nonlinear oscillators. It models real systems where restoring forces, resistance (damping), and external periodic forces interact.</p>
+<p>Governing Equation</p>
+<p>The general motion is described by:</p>
+<p>Where:</p>
+<p>: angular position</p>
+<p>: damping constant</p>
+<p>: gravitational acceleration</p>
+<p>: pendulum length</p>
+<p>: driving force amplitude</p>
+<p>: driving force frequency</p>
+<p>Fundamental Mechanics Principles</p>
+<p>This equation is rooted in Newton's Second Law:</p>
+<p>In the rotational form:</p>
+<p>The restoring torque  due to gravity is countered by damping and driven force.</p>
+<p>The total mechanical energy of the pendulum in the absence of damping and driving is:</p>
+<p>Linearized Approximation</p>
+<p>Using the small-angle assumption (), the equation becomes:</p>
+<p>This is a linear, second-order non-homogeneous differential equation, useful for analytical or numerical simulation.</p>
+<h1 id="2-simulation-in-python">2. Simulation in Python</h1>
+<p>We simulate three different pendulum conditions:</p>
+<p>A frictionless simple pendulum</p>
+<p>A damped pendulum</p>
+<p>A driven pendulum with no damping</p>
+<h1 id="python-code">Python Code</h1>
+<p>import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp</p>
+<p>def pendulum_dynamics(t, y, b, g, L, A, omega):
+    theta, omega_ = y
+    dtheta_dt = omega_
+    domega_dt = -b * omega_ - (g / L) * np.sin(theta) + A * np.cos(omega * t)
+    return [dtheta_dt, domega_dt]</p>
+<h1 id="time-setup">Time setup</h1>
+<p>t_range = (0, 50)
+t_points = np.linspace(*t_range, 1000)
+initial_state = [0.2, 0.0]</p>
+<h1 id="pendulum-setups">Pendulum setups</h1>
+<p>scenarios = [
+    {"label": "1) Undamped", "b": 0.0, "A": 0.0, "color": "salmon"},
+    {"label": "2) Damped", "b": 0.4, "A": 0.0, "color": "slateblue"},
+    {"label": "3) Driven", "b": 0.0, "A": 1.0, "color": "mediumseagreen"},
+]</p>
+<h1 id="constants">Constants</h1>
+<p>g = 9.8
+L = 1.0
+omega_drive = 2.0</p>
+<h1 id="plotting-results">Plotting results</h1>
+<p>fig, axes = plt.subplots(len(scenarios), 2, figsize=(12, 10))</p>
+<p>for i, scenario in enumerate(scenarios):
+    sol = solve_ivp(
+        pendulum_dynamics,
+        t_range,
+        initial_state,
+        args=(scenario["b"], g, L, scenario["A"], omega_drive),
+        t_eval=t_points
+    )
+    theta, omega_ = sol.y
+    axes[i, 0].plot(sol.t, theta, color=scenario["color"])
+    axes[i, 0].set_title(f'{scenario["label"]} - Time Evolution')
+    axes[i, 0].set_xlabel("Time (s)")
+    axes[i, 0].set_ylabel("Angle θ (rad)")
+    axes[i, 0].grid(True)</p>
+<pre><code>axes[i, 1].plot(theta, omega_, color=scenario["color"])
+axes[i, 1].set_title(f'{scenario["label"]} - Phase Space')
+axes[i, 1].set_xlabel("\u03b8 (rad)")
+axes[i, 1].set_ylabel("\u03c9 (rad/s)")
+axes[i, 1].grid(True)
+</code></pre>
+<p>plt.tight_layout()
+plt.show()
+<img alt="alt text" src="../WhatsApp%20Image%202025-03-31%20at%2022.49.50_277e3b36.jpg"/></p>
+<h1 id="3-observations">3. Observations</h1>
+<p>Undamped Case</p>
+<p>Angle oscillates with constant amplitude</p>
+<p>Phase space shows ideal ellipses</p>
+<p>Damped Case</p>
+<p>Oscillations decay gradually</p>
+<p>Spiral phase diagram shows energy loss over time</p>
+<p>Driven Case</p>
+<p>Sustained or growing oscillations occur depending on the drive parameters</p>
+<p>Phase diagram reveals complex periodic orbits</p>
+<h1 id="4-summary">4. Summary</h1>
+<p>This model demonstrates how damping and external driving forces influence nonlinear oscillators. It is a foundational system for studying resonance, energy dissipation, and chaos.</p>
+<p>Possible Extensions:</p>
+<p>Investigate stronger drives leading to chaotic motion</p>
+<p>Track total energy and dissipation over time</p>
+<p>Explore amplitude vs. frequency relationships to analyze resonance</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
