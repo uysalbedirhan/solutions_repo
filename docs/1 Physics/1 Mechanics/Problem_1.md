@@ -115,6 +115,7 @@ for i, scenario in enumerate(scenarios):
 
 plt.tight_layout()
 plt.show()
+
 ![alt text](<WhatsApp Image 2025-03-31 at 22.49.50_277e3b36.jpg>)
 # 3. Observations
 
